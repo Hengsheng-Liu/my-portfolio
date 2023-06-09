@@ -1,25 +1,38 @@
 "use client"; 
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
+import { Disclosure} from '@headlessui/react'
+import { Bars3Icon, XMarkIcon, SunIcon,MoonIcon} from '@heroicons/react/24/outline'
 import { useTheme } from "next-themes";
+import { AiFillGithub, AiFillLinkedin} from 'react-icons/ai';
+import Link from 'next/link';
 const navigation = [
   { name: 'Home', href: '/home', current: true },
   { name: 'Projects', href: '/Projects', current: false },
   { name: 'Experience', href: '/Experience', current: false },
   { name: 'Contact', href: '/Contact', current: false },
 ]
-
+const social = [
+    {
+      href: 'https://github.com/Hengsheng-Liu',
+      icon: <AiFillGithub className="w-12 h-12 p-3 rounded focus:outline-none text-gray-300 hover:text-gray-100 justify-end" />,
+    },
+    {
+      href: 'https://www.linkedin.com/in/hengsheng-liu-2a116a261/',
+      icon: <AiFillLinkedin className="w-12 h-12 p-3 rounded focus:outline-none text-gray-300 hover:text-gray-100 justify-end" />,
+    },
+    
+  ];
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
+  const { theme, setTheme } = useTheme();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <div>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -32,9 +45,9 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 items-center justify-center">
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex space-x-5">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
@@ -51,6 +64,26 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
+            {social.map((link, icon) => (
+                <Link href={link.href} key={icon}>
+                {link.icon}
+                </Link>
+            ))}
+            <button>
+                {theme === "dark" ? (
+                    <SunIcon
+                    aria-label="Toggle Bright Mode"
+                    className="w-12 h-12 p-3 rounded focus:outline-none text-gray-300 hover:text-gray-100 justify-end"
+                    onClick={() => setTheme("light")}
+                    />
+                ) : (
+                    <MoonIcon
+                    aria-label="Toggle Dark Mode"
+                    className="w-12 h-12 p-3 rounded focus:outline-none text-gray-300 hover:text-gray-100 justify-end"
+                    onClick={() => setTheme("dark")}
+                    />
+                )}
+            </button>
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">
